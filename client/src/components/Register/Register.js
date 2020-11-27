@@ -5,10 +5,10 @@ import { useHistory } from "react-router-dom";
 const Register = ({ authenticateUser }) => {
   let history = useHistory();
   const [userData, setUserData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    passwordConfirm: "",
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
   });
   const [errorData, setErrorData] = useState({ errors: null });
 
@@ -25,7 +25,7 @@ const Register = ({ authenticateUser }) => {
 
   const registerUser = async () => {
     if (password !== passwordConfirm) {
-      console.log("Passwords do not match");
+      console.log('Passwords do not match');
     } else {
       const newUser = {
         name: name,
@@ -36,21 +36,21 @@ const Register = ({ authenticateUser }) => {
       try {
         const config = {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         };
 
         const body = JSON.stringify(newUser);
         const res = await axios.post(
-          "http://localhost:5000/api/users",
+          'http://localhost:5000/api/users',
           body,
           config
         );
 
-        localStorage.setItem("token", res.data.token);
-        history.push("/");
+        localStorage.setItem('token', res.data.token);
+        history.push('/');
       } catch (error) {
-        localStorage.removeItem("token");
+        localStorage.removeItem('token');
 
         setErrorData({
           ...errors,
