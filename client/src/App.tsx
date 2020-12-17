@@ -75,8 +75,8 @@ class App extends React.Component {
         }
       };
       axios
-        .get('http://localhost:5000/api/posts', config)
-        .then((response) => {
+        .get('/api/posts', config)
+        .then(response => {
           this.setState({
             posts: response.data
           })

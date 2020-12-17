@@ -8,11 +8,11 @@ import config from 'config';
 import User from './models/User';
 import Post from './models/Post'
 import auth from './middleware/auth';
-
-
+import path from 'path';
 
 // Initialize express app
 const app = express();
+connectDatabase();
 
 // Confi. Middlaware
 app.use(express.json({extended: false}));
@@ -22,18 +22,12 @@ app.use(
     })
 );
 
-connectDatabase();
-
-//API endoint
-app.get('/', (req, res) => 
-    res.send('http get request sent to root API endpoint.')
-);
-
 // API endpoints
 /**
  * @route POST api/users
  * @desc Register user
  */
+
 // Api/users - validation code - check errors
 app.post(
   '/api/users',
@@ -300,7 +294,18 @@ app.put('/api/posts/:id', auth, async (req, res) => {
   }
 });
 
+//server build files in production
+if(process.env.NODE_ENV === "production"){
+    //set build folder
+    app.use(express.static('client/build'));
+
+    //route all requests to server index file
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
+}
+
 //Connection Listener
-const port = 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server started at port ${port}`));
 
